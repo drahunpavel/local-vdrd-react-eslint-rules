@@ -1,1 +1,0 @@
-# vdrd-react-eslint-rules

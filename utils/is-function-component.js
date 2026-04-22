@@ -1,4 +1,4 @@
 import { isReturnsJSX } from './is-returns-jsx.js';
 
-export const isFunctionComponent = init =>
-    init && (init.type === 'ArrowFunctionExpression' || init.type === 'FunctionExpression') && isReturnsJSX(init.body);
+export const isFunctionComponent = node =>
+    node && (node.type === 'ArrowFunctionExpression' || node.type === 'FunctionExpression') && isReturnsJSX(node.body);

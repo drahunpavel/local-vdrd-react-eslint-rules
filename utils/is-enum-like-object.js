@@ -1,10 +1,10 @@
-export const isEnumLikeObject = init => {
-    if (init?.type !== 'ObjectExpression') return false;
+export const isEnumLikeObject = node => {
+    if (node?.type !== 'ObjectExpression') return false;
 
-    if (init.properties.length === 0) return false;
+    if (node.properties.length === 0) return false;
 
     // все values - примитивы
-    return init.properties.every(prop => {
+    return node.properties.every(prop => {
         if (prop.type !== 'Property') return false;
 
         const value = prop.value;

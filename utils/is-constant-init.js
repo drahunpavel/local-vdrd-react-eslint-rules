@@ -1,23 +1,23 @@
 import { isStaticLiteralTree } from './is-static-literal-tree.js';
 
-export const isConstantInit = init => {
-    if (!init) return false;
+export const isConstantInit = node => {
+    if (!node) return false;
 
     // Literal
-    if (init.type === 'Literal') {
+    if (node.type === 'Literal') {
         return true;
     }
 
     // Object
-    if (init.type === 'ObjectExpression') {
-        if (init.properties.length === 0) return false;
-        return isStaticLiteralTree(init);
+    if (node.type === 'ObjectExpression') {
+        if (node.properties.length === 0) return false;
+        return isStaticLiteralTree(node);
     }
 
     // Array
-    if (init.type === 'ArrayExpression') {
-        if (init.elements.length === 0) return false;
-        return isStaticLiteralTree(init);
+    if (node.type === 'ArrayExpression') {
+        if (node.elements.length === 0) return false;
+        return isStaticLiteralTree(node);
     }
 
     return false;

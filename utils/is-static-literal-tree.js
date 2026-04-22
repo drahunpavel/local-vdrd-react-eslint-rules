@@ -1,17 +1,17 @@
-export const isStaticLiteralTree = init => {
-    if (!init) return false;
+export const isStaticLiteralTree = node => {
+    if (!node) return false;
 
     // примитивы
-    if (init.type === 'Literal') return true;
+    if (node.type === 'Literal') return true;
 
     // объекты с примитивными значениями
-    if (init.type === 'ObjectExpression') {
-        return init.properties.every(prop => isStaticLiteralTree(prop.value));
+    if (node.type === 'ObjectExpression') {
+        return node.properties.every(prop => isStaticLiteralTree(prop.value));
     }
 
     // все элементы массива примитивы
-    if (init.type === 'ArrayExpression') {
-        return init.elements.every(el => isStaticLiteralTree(el));
+    if (node.type === 'ArrayExpression') {
+        return node.elements.every(el => isStaticLiteralTree(el));
     }
 
     return false;

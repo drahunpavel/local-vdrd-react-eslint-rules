@@ -7,8 +7,7 @@ import vdrdReactEslintRules from 'vdrd-react-eslint-rules';
 
 export default [
     // базовые конфиги ESLint
-    ...eslint.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...configs.recommended,
 
     // подключение набора правил из плагина
     vdrdReactEslintRules.configs.recommended,

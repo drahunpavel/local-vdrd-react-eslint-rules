@@ -1,7 +1,7 @@
-export const isReturnsJSX = (init) => {
-  if (!init) return false;
+export const isReturnsJSX = (node) => {
+  if (!node) return false;
 
-  if (init.type === "JSXElement" || init.type === "JSXFragment") return true;
+  if (node.type === "JSXElement" || node.type === "JSXFragment") return true;
 
   if (node.type === "ArrowFunctionExpression") {
     return isReturnsJSX(node.body);
@@ -39,7 +39,7 @@ const containsJSXReturn = (statements) => {
       }
     }
 
-    // поиск внутри if/switch и тд
+    // поиск внутри if/switch
     if (stmt.type === "IfStatement") {
       if (containsJSXReturn(stmt.consequent?.body)) return true;
       if (containsJSXReturn(stmt.alternate?.body)) return true;

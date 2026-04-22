@@ -1,5 +1,6 @@
 import { isUpperSnakeCase } from "../utils/naming-validators.js";
 import { isConstantInit } from "../utils/is-constant-init.js";
+import { metrics } from "../reports/metrics.js";
 
 export default {
   meta: {
@@ -26,6 +27,8 @@ export default {
 
           if (!name) continue;
 
+          metrics.constantNaming.checked++;
+
           // исключение type annotation "as const"
           if (init?.type === "TSAsExpression") {
             const type = init.typeAnnotation;
@@ -42,6 +45,8 @@ export default {
           if (!isConstantInit(init)) continue;
 
           if (!isUpperSnakeCase(name)) {
+            metrics.constantNaming.errors++;
+
             context.report({
               node: declarator.id,
               messageId: "notUpperSnake",

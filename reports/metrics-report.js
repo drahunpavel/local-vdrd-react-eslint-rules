@@ -12,6 +12,10 @@ export default {
   create() {
     return {
       "Program:exit"() {
+        if (metrics.printed) return;
+
+        metrics.printed = true;
+
         const totalChecked =
           metrics.constantNaming.checked +
           metrics.enumNaming.checked +
@@ -40,7 +44,6 @@ export default {
             2,
           ),
         );
-        console.log("=============================\n");
       },
     };
   },

@@ -1,4 +1,4 @@
-import { metrics } from "../metrics.js";
+import { metrics } from "./metrics.js";
 
 export default {
   meta: {

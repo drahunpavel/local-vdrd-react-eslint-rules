@@ -4,6 +4,7 @@ import { isReactWrapper } from '../utils/is-react-wrapper.js';
 import { isInsideComponent } from '../utils/is-inside-component.js';
 import { isClassComponent } from '../utils/is-class-component.js';
 import { isFunctionComponent } from '../utils/is-function-component.js';
+import { metrics } from '../reports/metrics.js';
 
 export default {
     meta: {
@@ -22,6 +23,8 @@ export default {
             FunctionDeclaration(node) {
                 if (!node.id) return;
 
+                metrics.componentNaming.checked++;
+
                 const name = node.id.name;
 
                 if (isInsideComponent(node)) return;
@@ -29,6 +32,8 @@ export default {
                 if (!isReturnsJSX(node.body)) return;
 
                 if (!isPascalCase(name)) {
+                    metrics.componentNaming.errors++;
+
                     context.report({
                         node: node.id,
                         messageId: 'notPascal',
@@ -40,6 +45,8 @@ export default {
             VariableDeclarator(node) {
                 if (!node.id || node.id.type !== 'Identifier') return;
 
+                metrics.componentNaming.checked++;
+
                 const name = node.id.name;
                 const init = node.init;
 
@@ -48,9 +55,9 @@ export default {
                 if (isInsideComponent(node)) return;
 
                 if (isFunctionComponent(init)) {
-                    // if (!isReturnsJSX(init.body)) return;
-
                     if (!isPascalCase(name)) {
+                        metrics.componentNaming.errors++;
+
                         context.report({
                             node: node.id,
                             messageId: 'notPascal',
@@ -65,9 +72,9 @@ export default {
                     if (!arg) return;
 
                     if (isFunctionComponent(arg)) {
-                        // if (!isReturnsJSX(arg.body)) return;
-
                         if (!isPascalCase(name)) {
+                            metrics.componentNaming.errors++;
+
                             context.report({
                                 node: node.id,
                                 messageId: 'notPascal',
@@ -81,6 +88,8 @@ export default {
                 const name = node.id?.name;
                 if (!name) return;
 
+                metrics.componentNaming.checked++;
+
                 const renderMethod = isClassComponent(node);
 
                 if (!renderMethod) return;
@@ -88,6 +97,8 @@ export default {
                 if (!isReturnsJSX(renderMethod.value.body)) return;
 
                 if (!isPascalCase(name)) {
+                    metrics.componentNaming.errors++;
+
                     context.report({
                         node: node.id,
                         messageId: 'notPascal',

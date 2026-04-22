@@ -1,27 +1,60 @@
-export const isReturnsJSX = init => {
-    if (!init) return false;
+export const isReturnsJSX = (init) => {
+  if (!init) return false;
 
-    if (init.type === 'JSXElement' || init.type === 'JSXFragment') return true;
+  if (init.type === "JSXElement" || init.type === "JSXFragment") return true;
 
-    if (init.type === 'BlockStatement') {
-        return containsJSXReturn(init.body);
-    }
+  if (node.type === "ArrowFunctionExpression") {
+    return isReturnsJSX(node.body);
+  }
 
-    return false;
+  if (
+    node.type === "FunctionDeclaration" ||
+    node.type === "FunctionExpression" ||
+    node.type === "ArrowFunctionExpression" ||
+    node.type === "MethodDefinition"
+  ) {
+    return isReturnsJSX(node.body);
+  }
+
+  if (node.type === "BlockStatement") {
+    return containsJSXReturn(node.body);
+  }
+
+  return false;
 };
 
-const containsJSXReturn = statements => {
-    for (const stmt of statements) {
-        if (stmt.type === 'ReturnStatement') {
-            if (stmt.argument && (stmt.argument.type === 'JSXElement' || stmt.argument.type === 'JSXFragment')) {
-                return true;
-            }
-        }
+const containsJSXReturn = (statements) => {
+  if (!Array.isArray(statements)) return false;
 
-        // поиск внутри if/switch и тд
-        if (stmt.consequent && containsJSXReturn(stmt.consequent.body || [])) return true;
-        if (stmt.alternate && containsJSXReturn(stmt.alternate.body || [])) return true;
+  for (const stmt of statements) {
+    if (!stmt) continue;
+
+    if (stmt.type === "ReturnStatement") {
+      if (
+        stmt.argument &&
+        (stmt.argument.type === "JSXElement" ||
+          stmt.argument.type === "JSXFragment")
+      ) {
+        return true;
+      }
     }
 
-    return false;
+    // поиск внутри if/switch и тд
+    if (stmt.type === "IfStatement") {
+      if (containsJSXReturn(stmt.consequent?.body)) return true;
+      if (containsJSXReturn(stmt.alternate?.body)) return true;
+    }
+    if (stmt.type === "SwitchStatement") {
+      for (const cs of stmt.cases) {
+        if (containsJSXReturn(cs.consequent)) return true;
+      }
+    }
+
+    // вложенные блоки
+    if (stmt.type === "BlockStatement") {
+      if (containsJSXReturn(stmt.body)) return true;
+    }
+  }
+
+  return false;
 };

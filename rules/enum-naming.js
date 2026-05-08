@@ -1,6 +1,8 @@
 import { isUpperSnakeCase, isPascalCase } from '../utils/naming-validators.js';
 import { isEnumLikeObject } from '../utils/is-enum-like-object.js';
 import { metrics } from '../reports/metrics.js';
+import { isConstAssertion } from '../utils/is-const-assertion.js';
+import { unwrapConstAssertion } from '../utils/unwrap-const-assertion.js';
 
 export default {
     meta: {
@@ -36,6 +38,8 @@ export default {
                 for (const member of node.body.members) {
                     const keyName = member.id?.name ?? member.id?.value;
 
+                    if (typeof keyName !== 'string') continue;
+
                     if (!isUpperSnakeCase(keyName)) {
                         metrics.enumNaming.errors++;
 
@@ -56,9 +60,9 @@ export default {
                 const name = id.name;
                 const init = node.init;
 
-                if (init?.type !== 'TSAsExpression') return;
+                if (!isConstAssertion(init)) return;
 
-                const obj = init.expression;
+                const obj = unwrapConstAssertion(init);
 
                 if (!isEnumLikeObject(obj)) return;
 
@@ -78,6 +82,8 @@ export default {
                     if (prop.type !== 'Property') continue;
 
                     const keyName = prop.key.name ?? prop.key.value;
+
+                    if (typeof keyName !== 'string') continue;
 
                     if (!isUpperSnakeCase(keyName)) {
                         metrics.enumNaming.errors++;

@@ -30,6 +30,32 @@ tester.run("enum-naming", rule, {
             async getTemplateAnswer() {},
         } as const;
         `,
+
+    // computed key не должен падать
+    `
+        const AppRoute = {
+            ['LOGIN']: '/login',
+            MAIN: '/main',
+        } as const;
+        `,
+
+    // as SomeType не должен считаться enum-like (правило только про as const)
+    `
+        type Routes = Record<string, string>;
+        const AppRoute = {
+            login: '/login',
+            MAIN: '/main',
+        } as Routes;
+        `,
+
+    // satisfies поверх as const тоже должен проверяться
+    `
+        type Routes = Record<string, string>;
+        const AppRoute = {
+            LOGIN: '/login',
+            MAIN: '/main',
+        } as const satisfies Routes;
+        `,
   ],
 
   invalid: [

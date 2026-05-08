@@ -46,6 +46,15 @@ tester.run("variable-and-function-naming", rule, {
         } as const;
         `,
 
+    // object enum через satisfies - исключение
+    `
+        type Routes = Record<string, string>;
+        const AppRoute = {
+            LOGIN: '/login',
+            MAIN: '/main',
+        } as const satisfies Routes;
+        `,
+
     // статический объект - исключение
     `
         const config = { a: 1 };

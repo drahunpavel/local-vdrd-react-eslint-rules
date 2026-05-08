@@ -5,6 +5,7 @@ import { isFunctionComponent } from '../utils/is-function-component.js';
 import { isReactWrapper } from '../utils/is-react-wrapper.js';
 import { isPascalCase } from '../utils/naming-validators.js';
 import { metrics } from '../reports/metrics.js';
+import { unwrapTypeWrappers } from '../utils/unwrap-type-wrappers.js';
 
 export default {
     meta: {
@@ -24,8 +25,6 @@ export default {
             VariableDeclarator(node) {
                 const id = node.id;
                 if (id?.type !== 'Identifier') return;
-
-                metrics.variableAndFunctionNaming.checked++;
 
                 const name = id.name;
                 const init = node.init;
@@ -50,13 +49,15 @@ export default {
                 // исключение констант
                 if (isUpperSnakeCase(name)) return;
 
-                const realInit = init?.type === 'TSAsExpression' ? init.expression : init;
+                const realInit = unwrapTypeWrappers(init);
                 // исключение enum
                 if (isEnumLikeObject(realInit)) return;
 
                 // исключение объектов и массивов
                 if (realInit?.type === 'ObjectExpression') return;
                 if (realInit?.type === 'ArrayExpression') return;
+
+                metrics.variableAndFunctionNaming.checked++;
 
                 if (!isCamelCase(name)) {
                     metrics.variableAndFunctionNaming.errors++;
@@ -72,18 +73,18 @@ export default {
                 const id = node.id;
                 if (!id) return;
 
-                metrics.variableAndFunctionNaming.checked++;
-
                 const name = id.name;
 
                 // исключение компонентов
                 if (isFunctionComponent(node)) return;
-
+                
                 // исключение PascalCase (компоненты)
                 if (isPascalCase(name)) return;
 
                 // исключение UPPER_SNAKE_CASE
                 if (isUpperSnakeCase(name)) return;
+
+                metrics.variableAndFunctionNaming.checked++;
 
                 if (!isCamelCase(name)) {
                     metrics.variableAndFunctionNaming.errors++;

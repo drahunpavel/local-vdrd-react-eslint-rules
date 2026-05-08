@@ -1,6 +1,7 @@
 import { isUpperSnakeCase } from "../utils/naming-validators.js";
 import { isConstantInit } from "../utils/is-constant-init.js";
 import { metrics } from "../reports/metrics.js";
+import { isConstAssertion } from "../utils/is-const-assertion.js";
 
 export default {
   meta: {
@@ -30,16 +31,7 @@ export default {
           metrics.constantNaming.checked++;
 
           // исключение type annotation "as const"
-          if (init?.type === "TSAsExpression") {
-            const type = init.typeAnnotation;
-
-            if (
-              type.type === "TSTypeReference" &&
-              type.typeName.name === "const"
-            ) {
-              continue;
-            }
-          }
+          if (isConstAssertion(init)) continue;
 
           // проверка, что все value статические
           if (!isConstantInit(init)) continue;

@@ -1,4 +1,4 @@
-const unwrapConstAssertion = node => {
+export const unwrapConstAssertion = node => {
     if (!node) return node;
 
     if (node.type === 'TSSatisfiesExpression') return unwrapConstAssertion(node.expression);

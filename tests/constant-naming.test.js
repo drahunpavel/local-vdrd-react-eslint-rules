@@ -20,6 +20,12 @@ tester.run("constant-naming", rule, {
     // type annotation "as const" - исключение
     `const UserType = { ADMIN: "admin", USER: "user" } as const;`,
 
+    // satisfies поверх as const - исключение
+    `
+      type Roles = Record<string, string>; 
+      const UserType = { ADMIN: "admin" } as const satisfies Roles;
+      `,
+
     // не const не проверяется
     `let foo = 1;`,
     `var bar = 2;`,

@@ -23,13 +23,13 @@ export default {
             FunctionDeclaration(node) {
                 if (!node.id) return;
 
-                metrics.componentNaming.checked++;
-
                 const name = node.id.name;
 
                 if (isInsideComponent(node)) return;
 
                 if (!isReturnsJSX(node.body)) return;
+
+                metrics.componentNaming.checked++;
 
                 if (!isPascalCase(name)) {
                     metrics.componentNaming.errors++;
@@ -45,8 +45,6 @@ export default {
             VariableDeclarator(node) {
                 if (!node.id || node.id.type !== 'Identifier') return;
 
-                metrics.componentNaming.checked++;
-
                 const name = node.id.name;
                 const init = node.init;
 
@@ -55,6 +53,8 @@ export default {
                 if (isInsideComponent(node)) return;
 
                 if (isFunctionComponent(init)) {
+                    metrics.componentNaming.checked++;
+
                     if (!isPascalCase(name)) {
                         metrics.componentNaming.errors++;
 
@@ -72,6 +72,8 @@ export default {
                     if (!arg) return;
 
                     if (isFunctionComponent(arg)) {
+                        metrics.componentNaming.checked++;
+
                         if (!isPascalCase(name)) {
                             metrics.componentNaming.errors++;
 
@@ -88,13 +90,13 @@ export default {
                 const name = node.id?.name;
                 if (!name) return;
 
-                metrics.componentNaming.checked++;
-
                 const renderMethod = isClassComponent(node);
 
                 if (!renderMethod) return;
 
                 if (!isReturnsJSX(renderMethod.value.body)) return;
+
+                metrics.componentNaming.checked++;
 
                 if (!isPascalCase(name)) {
                     metrics.componentNaming.errors++;

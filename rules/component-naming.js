@@ -5,6 +5,7 @@ import { isInsideComponent } from '../utils/is-inside-component.js';
 import { isClassComponent } from '../utils/is-class-component.js';
 import { isFunctionComponent } from '../utils/is-function-component.js';
 import { metrics } from '../reports/metrics.js';
+import { isWrappedComponent } from '../utils/is-wrapped-component.js';
 
 export default {
     meta: {
@@ -67,24 +68,37 @@ export default {
                     return;
                 }
 
-                if (isReactWrapper(init)) {
-                    const arg = init.arguments[0];
-                    if (!arg) return;
+                if (isWrappedComponent(init)) {
+                    if (!isPascalCase(name)) {
+                        metrics.componentNaming.errors++;
 
-                    if (isFunctionComponent(arg)) {
-                        metrics.componentNaming.checked++;
-
-                        if (!isPascalCase(name)) {
-                            metrics.componentNaming.errors++;
-
-                            context.report({
-                                node: node.id,
-                                messageId: 'notPascal',
-                                data: { name },
-                            });
-                        }
+                        context.report({
+                            node: node.id,
+                            messageId: 'notPascal',
+                            data: { name },
+                        });
                     }
+
+                    return;
                 }
+                // if (isReactWrapper(init)) {
+                //     const arg = init.arguments[0];
+                //     if (!arg) return;
+
+                //     if (isFunctionComponent(arg)) {
+                //         metrics.componentNaming.checked++;
+
+                        // if (!isPascalCase(name)) {
+                        //     metrics.componentNaming.errors++;
+
+                        //     context.report({
+                        //         node: node.id,
+                        //         messageId: 'notPascal',
+                        //         data: { name },
+                        //     });
+                        // }
+                //     }
+                // }
             },
             ClassDeclaration(node) {
                 const name = node.id?.name;

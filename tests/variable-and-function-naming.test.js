@@ -32,6 +32,15 @@ tester.run("variable-and-function-naming", rule, {
     `
         const UserCard = memo(UserCardInner);
         `,
+        
+    // lazy-компонент — исключение
+    `
+        const LoginContainer = lazy(() => import('./login'));
+      `,
+    // React.lazy — исключение
+    `
+        const LoginContainer = React.lazy(() => import('./login'));
+      `,
 
     // константа - исключение
     `

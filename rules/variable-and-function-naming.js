@@ -6,6 +6,7 @@ import { isReactWrapper } from '../utils/is-react-wrapper.js';
 import { isPascalCase } from '../utils/naming-validators.js';
 import { metrics } from '../reports/metrics.js';
 import { unwrapTypeWrappers } from '../utils/unwrap-type-wrappers.js';
+import { isWrappedComponent } from '../utils/is-wrapped-component.js';
 
 export default {
     meta: {
@@ -33,18 +34,7 @@ export default {
 
                 // исключение компонентов
                 if (isFunctionComponent(init)) return;
-                if (isReactWrapper(init)) {
-                    const inner = init.arguments[0];
-
-                    if (!inner) return;
-
-                    if (isFunctionComponent(inner)) {
-                        return;
-                    }
-                    if (inner.type === 'Identifier' && isPascalCase(inner.name)) {
-                        return;
-                    }
-                }
+                if (isWrappedComponent(init)) return;
 
                 // исключение констант
                 if (isUpperSnakeCase(name)) return;

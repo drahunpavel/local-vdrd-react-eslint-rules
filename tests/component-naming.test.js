@@ -51,6 +51,16 @@ tester.run("component-naming", rule, {
             return <div>{renderHeader()}</div>;
         }
         `,
+
+    // lazy
+    `
+        const LoginContainer = lazy(() => import('./login'));
+        `,
+
+    // React.lazy
+    `
+        const LoginContainer = React.lazy(() => import('./login'));
+        `,
   ],
 
   invalid: [
@@ -98,6 +108,14 @@ tester.run("component-naming", rule, {
             }
             `,
       errors: [{ messageId: "notPascal", data: { name: "userTable" } }],
+    },
+
+    // lazy - некорректное наименование компонента
+    {
+      code: `
+            const loginContainer = lazy(() => import('./login'));
+            `,
+      errors: [{ messageId: "notPascal", data: { name: "loginContainer" } }],
     },
   ],
 });

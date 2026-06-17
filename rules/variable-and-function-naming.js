@@ -32,8 +32,9 @@ export default {
 
                 if (!init) return;
 
-                // исключение компонентов
+                // React-компонент: const Foo = () => <div />
                 if (isFunctionComponent(init)) return;
+                // React-компонент обернутый memo, forwardRef, lazy и тд
                 if (isWrappedComponent(init)) return;
 
                 // исключение констант

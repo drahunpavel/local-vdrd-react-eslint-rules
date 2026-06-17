@@ -29,6 +29,9 @@ tester.run("constant-naming", rule, {
     // не const не проверяется
     `let foo = 1;`,
     `var bar = 2;`,
+
+    // $ перед константой\переменной - исключение
+    `const $dividerColor = 'rgba(38, 38, 38, 0.08)';`
   ],
 
   invalid: [

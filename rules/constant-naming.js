@@ -1,4 +1,4 @@
-import { isUpperSnakeCase } from "../utils/naming-validators.js";
+import { isUpperSnakeCase, hasStart$Prefix } from "../utils/naming-validators.js";
 import { isConstantInit } from "../utils/is-constant-init.js";
 import { metrics } from "../reports/metrics.js";
 import { isConstAssertion } from "../utils/is-const-assertion.js";
@@ -28,6 +28,9 @@ export default {
 
           if (!name) continue;
 
+          // исключение $ перед константой\переменной
+          if (hasStart$Prefix(name)) continue;
+          
           metrics.constantNaming.checked++;
 
           // исключение type annotation "as const"

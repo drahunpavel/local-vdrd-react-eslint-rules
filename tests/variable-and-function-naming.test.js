@@ -83,6 +83,11 @@ tester.run("variable-and-function-naming", rule, {
     `
         const user: User = { id: 1 };
         `,
+
+    // $ перед константой\переменной - исключение
+    `
+        const $dividerColor = 'rgba(38, 38, 38, 0.08)';
+        `
   ],
 
   invalid: [
@@ -132,6 +137,14 @@ tester.run("variable-and-function-naming", rule, {
             const User_List = getList();
             `,
       errors: [{ messageId: "notCamelCase", data: { name: "User_List" } }],
+    },
+
+    // $ перед переменной - некорректное имя
+    {
+      code: `
+            export const $divider_color = 'rgba(38, 38, 38, 0.08)';
+            `,
+      errors: [{ messageId: "notCamelCase", data: { name: "$divider_color" } }],
     },
   ],
 });

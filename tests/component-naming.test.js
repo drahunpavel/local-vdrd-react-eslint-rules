@@ -69,6 +69,7 @@ tester.run("component-naming", rule, {
     // компонент-алиаса через условие
     `
         const DsLabeled = condition ? Labeled : Label;
+        const Image = index < count ? GoldStar : SilverStar;
         `,
     // компонент-алиаса через Object.assign
     `
@@ -153,25 +154,32 @@ tester.run("component-naming", rule, {
     // компонент-алиас через условие, некорректное наименование компонента
     {
       code: `
-          const dsLabeled = condition ? Labeled : Label;
-        `,
+            const dsLabeled = condition ? Labeled : Label;
+          `,
       errors: [{ messageId: "notPascal", data: { name: "dsLabeled" } }],
+    },
+    // компонент-алиас через условие, некорректное наименование компонента
+    {
+      code: `
+        const image = index < count ? GoldStar : SilverStar;
+      `,
+      errors: [{ messageId: "notPascal", data: { name: "image" } }],
     },
     // компонент-алиас через Object.assign, некорректное наименование компонента
     {
-        code: `
+      code: `
               const sbPopupIcon = Object.assign(SbPopupIconComponent, { Item: MenuItem });
           `,
-        errors: [{ messageId: "notPascal", data: { name: "sbPopupIcon" } }],
-      },
+      errors: [{ messageId: "notPascal", data: { name: "sbPopupIcon" } }],
+    },
     // компонент-алиас через ??, некорректное наименование компонента
-      {
-        code: `
+    {
+      code: `
           const buttonTypes = { primary: ButtonPrimary, base: ButtonBase };
           const renderComponent = buttonTypes[type] ?? ButtonPrimary;
         `,
-        errors: [{ messageId: "notPascal", data: { name: "renderComponent" } }],
-      },
+      errors: [{ messageId: "notPascal", data: { name: "renderComponent" } }],
+    },
     // navigator factory, некорректное наименование компонента
     {
       code: `

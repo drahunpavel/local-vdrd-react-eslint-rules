@@ -7,6 +7,7 @@ import { metrics } from '../reports/metrics.js';
 import { unwrapTypeWrappers } from '../utils/unwrap-type-wrappers.js';
 import { isWrappedComponent } from '../utils/is-wrapped-component.js';
 import { isComponentAlias } from '../utils/is-component-alias.js';
+import { isNavigatorFactory } from '../utils/is-navigator-factory.js';
 
 export default {
     meta: {
@@ -32,22 +33,25 @@ export default {
 
                 if (!init) return;
 
-                // React-компонент: const Label = () => <div />
+                // React-компонент: const Label = () => <div /> // skip
                 if (isFunctionComponent(init)) return;
-                // React-компонент обернутый memo, forwardRef, lazy и тд
+                // React-компонент обернутый memo, forwardRef, lazy и тд // skip
                 if (isWrappedComponent(init)) return;
 
-                // компонент-алиас/ реэкспорт компонента-алиаса
+                // компонент-алиас/ реэкспорт компонента-алиаса // skip
                 if (isComponentAlias(init)) return;
 
-                // исключение констант
+                // navigator factory // skip
+                if (isNavigatorFactory(init)) return;
+                
+                // исключение констант // skip
                 if (isUpperSnakeCase(name)) return;
 
                 const realInit = unwrapTypeWrappers(init);
-                // исключение enum
+                // исключение enum // skip
                 if (isEnumLikeObject(realInit)) return;
 
-                // исключение объектов и массивов
+                // исключение объектов и массивов // skip
                 if (realInit?.type === 'ObjectExpression') return;
                 if (realInit?.type === 'ArrayExpression') return;
 

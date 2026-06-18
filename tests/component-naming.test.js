@@ -79,6 +79,10 @@ tester.run("component-naming", rule, {
         const buttonTypes = { primary: ButtonPrimary, base: ButtonBase };
         const RenderComponent = buttonTypes[type] ?? ButtonPrimary;
         `,
+    // navigator factory
+    `
+        const Stack = createNativeStackNavigator();
+        `,
   ],
 
   invalid: [
@@ -164,5 +168,12 @@ tester.run("component-naming", rule, {
         `,
         errors: [{ messageId: "notPascal", data: { name: "renderComponent" } }],
       },
+    // navigator factory, некорректное наименование компонента
+    {
+      code: `
+        const stack = createNativeStackNavigator();
+      `,
+      errors: [{ messageId: "notPascal", data: { name: "stack" } }],
+    },
   ],
 });

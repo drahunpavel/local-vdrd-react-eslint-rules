@@ -6,6 +6,7 @@ import { isFunctionComponent } from "../utils/is-function-component.js";
 import { metrics } from "../reports/metrics.js";
 import { isWrappedComponent } from "../utils/is-wrapped-component.js";
 import { isComponentAlias } from "../utils/is-component-alias.js";
+import { isNavigatorFactory } from "../utils/is-navigator-factory.js";
 
 export default {
   meta: {
@@ -73,6 +74,13 @@ export default {
 
         // реэкспорт компонента-алиаса: export const DsLabeled = Labeled
         if (isComponentAlias(init)) {
+          metrics.componentNaming.checked++;
+
+          enforcePascalCaseNaming(node.id, name);
+          return;
+        }
+        // navigator factory
+        if (isNavigatorFactory(init)) {
           metrics.componentNaming.checked++;
 
           enforcePascalCaseNaming(node.id, name);

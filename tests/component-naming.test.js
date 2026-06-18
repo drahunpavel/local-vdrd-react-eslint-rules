@@ -61,6 +61,10 @@ tester.run("component-naming", rule, {
     `
         const LoginContainer = React.lazy(() => import('./login'));
         `,
+    // реэкспорт/ компонента-алиаса
+    `
+        const DsLabeled = Labeled;
+        `,
   ],
 
   invalid: [
@@ -117,5 +121,12 @@ tester.run("component-naming", rule, {
             `,
       errors: [{ messageId: "notPascal", data: { name: "loginContainer" } }],
     },
+    // реэкспорт компонента-алиаса, некорректное наименование компонента
+    {
+        code: `
+          export const dsLabeled = Labeled;
+        `,
+        errors: [{ messageId: 'notPascal', data: { name: 'dsLabeled' } }],
+      },
   ],
 });

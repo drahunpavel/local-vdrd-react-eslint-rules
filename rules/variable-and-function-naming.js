@@ -2,11 +2,11 @@ import { isUpperSnakeCase } from '../utils/naming-validators.js';
 import { isCamelCase } from '../utils/naming-validators.js';
 import { isEnumLikeObject } from '../utils/is-enum-like-object.js';
 import { isFunctionComponent } from '../utils/is-function-component.js';
-import { isReactWrapper } from '../utils/is-react-wrapper.js';
 import { isPascalCase } from '../utils/naming-validators.js';
 import { metrics } from '../reports/metrics.js';
 import { unwrapTypeWrappers } from '../utils/unwrap-type-wrappers.js';
 import { isWrappedComponent } from '../utils/is-wrapped-component.js';
+import { isComponentAlias } from '../utils/is-component-alias.js';
 
 export default {
     meta: {
@@ -36,6 +36,9 @@ export default {
                 if (isFunctionComponent(init)) return;
                 // React-компонент обернутый memo, forwardRef, lazy и тд
                 if (isWrappedComponent(init)) return;
+
+                // компонент-алиас/ реэкспорт компонента-алиаса
+                if (isComponentAlias(init)) return;
 
                 // исключение констант
                 if (isUpperSnakeCase(name)) return;

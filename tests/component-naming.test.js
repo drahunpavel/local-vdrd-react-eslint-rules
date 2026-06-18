@@ -70,6 +70,10 @@ tester.run("component-naming", rule, {
     `
         const DsLabeled = condition ? Labeled : Label;
         `,
+    // компонент-алиаса через Object.assign
+        `
+        const SbPopupIcon = Object.assign(SbPopupIconComponent, { Item: MenuItem });
+    `,
   ],
 
   invalid: [
@@ -128,17 +132,24 @@ tester.run("component-naming", rule, {
     },
     // реэкспорт компонента-алиаса, некорректное наименование компонента
     {
-        code: `
+      code: `
           export const dsLabeled = Labeled;
         `,
-        errors: [{ messageId: 'notPascal', data: { name: 'dsLabeled' } }],
-      },
-      // компонент-алиаса через условие, некорректное наименование компонента
-      {
-        code: `
+      errors: [{ messageId: "notPascal", data: { name: "dsLabeled" } }],
+    },
+    // компонент-алиас через условие, некорректное наименование компонента
+    {
+      code: `
           const dsLabeled = condition ? Labeled : Label;
         `,
-        errors: [{ messageId: 'notPascal', data: { name: 'dsLabeled' } }],
+      errors: [{ messageId: "notPascal", data: { name: "dsLabeled" } }],
+    },
+    // компонент-алиас через Object.assign, некорректное наименование компонента
+    {
+        code: `
+              const sbPopupIcon = Object.assign(SbPopupIconComponent, { Item: MenuItem });
+          `,
+        errors: [{ messageId: "notPascal", data: { name: "sbPopupIcon" } }],
       },
   ],
 });

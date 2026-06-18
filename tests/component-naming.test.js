@@ -65,6 +65,11 @@ tester.run("component-naming", rule, {
     `
         const DsLabeled = Labeled;
         `,
+
+    // компонент-алиаса через условие
+    `
+        const DsLabeled = condition ? Labeled : Label;
+        `,
   ],
 
   invalid: [
@@ -125,6 +130,13 @@ tester.run("component-naming", rule, {
     {
         code: `
           export const dsLabeled = Labeled;
+        `,
+        errors: [{ messageId: 'notPascal', data: { name: 'dsLabeled' } }],
+      },
+      // компонент-алиаса через условие, некорректное наименование компонента
+      {
+        code: `
+          const dsLabeled = condition ? Labeled : Label;
         `,
         errors: [{ messageId: 'notPascal', data: { name: 'dsLabeled' } }],
       },

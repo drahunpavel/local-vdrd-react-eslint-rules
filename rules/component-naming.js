@@ -56,7 +56,7 @@ export default {
 
         if (isInsideComponent(node)) return;
 
-        // const Foo = () => <div />
+        // const Label = () => <div />
         if (isFunctionComponent(init)) {
           metrics.componentNaming.checked++;
 
@@ -71,7 +71,7 @@ export default {
           return;
         }
 
-        // реэкспорт компонента-алиаса: export const Foo = Bar
+        // реэкспорт компонента-алиаса: export const DsLabeled = Labeled
         if (isComponentAlias(init)) {
           metrics.componentNaming.checked++;
 

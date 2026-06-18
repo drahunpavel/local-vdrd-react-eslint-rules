@@ -8,6 +8,7 @@ import { unwrapTypeWrappers } from '../utils/unwrap-type-wrappers.js';
 import { isWrappedComponent } from '../utils/is-wrapped-component.js';
 import { isComponentAlias } from '../utils/is-component-alias.js';
 import { isNavigatorFactory } from '../utils/is-navigator-factory.js';
+import { isContextInit } from '../utils/is-context-init.js';
 
 export default {
     meta: {
@@ -43,6 +44,9 @@ export default {
 
                 // navigator factory // skip
                 if (isNavigatorFactory(init)) return;
+                
+                // context init // skip
+                if (isContextInit(init)) return;
                 
                 // исключение констант // skip
                 if (isUpperSnakeCase(name)) return;

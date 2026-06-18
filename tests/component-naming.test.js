@@ -88,6 +88,11 @@ tester.run("component-naming", rule, {
     `
         const RenderItemLeft = left.RenderItem;
         `,
+    // createContext
+    `
+        const ThemeContext = createContext(defaultTheme);
+        export const ThemeContext = React.createContext(defaultTheme);
+        `,
   ],
 
   invalid: [
@@ -193,6 +198,13 @@ tester.run("component-naming", rule, {
         const renderItemLeft = left.RenderItem;
       `,
       errors: [{ messageId: "notPascal", data: { name: "renderItemLeft" } }],
+    },
+    // createContext, некорректное наименование
+    {
+      code: `
+        const themeContext = createContext(defaultTheme);
+      `,
+      errors: [{ messageId: "notPascal", data: { name: "themeContext" } }],
     },
   ],
 });

@@ -7,6 +7,7 @@ import { metrics } from "../reports/metrics.js";
 import { isWrappedComponent } from "../utils/is-wrapped-component.js";
 import { isComponentAlias } from "../utils/is-component-alias.js";
 import { isNavigatorFactory } from "../utils/is-navigator-factory.js";
+import { isContextInit } from "../utils/is-context-init.js";
 
 export default {
   meta: {
@@ -83,6 +84,12 @@ export default {
         if (isNavigatorFactory(init)) {
           metrics.componentNaming.checked++;
 
+          enforcePascalCaseNaming(node.id, name);
+          return;
+        }
+
+        if (isContextInit(init)) {
+          metrics.componentNaming.checked++;
           enforcePascalCaseNaming(node.id, name);
           return;
         }

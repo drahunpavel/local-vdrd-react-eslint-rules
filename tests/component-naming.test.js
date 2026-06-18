@@ -95,7 +95,7 @@ tester.run("component-naming", rule, {
         `,
     // animated
     `
-        const AnimatedImage = animated.Image;
+        const AnimatedImage = animated(Image);
         `,
   ],
 

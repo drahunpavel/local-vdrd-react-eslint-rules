@@ -1,4 +1,4 @@
-const WRAPPER_NAMES = ['memo', 'forwardRef', 'observer', 'lazy'];
+const WRAPPER_NAMES = ['memo', 'forwardRef', 'observer', 'lazy', 'animated'];
 
 export const isReactWrapper = node => {
     if (!node) return false;

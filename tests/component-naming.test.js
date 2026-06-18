@@ -93,6 +93,10 @@ tester.run("component-naming", rule, {
         const ThemeContext = createContext(defaultTheme);
         export const ThemeContext = React.createContext(defaultTheme);
         `,
+    // animated
+    `
+        const AnimatedImage = animated.Image;
+        `,
   ],
 
   invalid: [
@@ -205,6 +209,13 @@ tester.run("component-naming", rule, {
         const themeContext = createContext(defaultTheme);
       `,
       errors: [{ messageId: "notPascal", data: { name: "themeContext" } }],
+    },
+    // animated, некорректное наименование
+    {
+      code: `
+        const animatedImage = animated.Image;
+      `,
+      errors: [{ messageId: "notPascal", data: { name: "animatedImage" } }],
     },
   ],
 });

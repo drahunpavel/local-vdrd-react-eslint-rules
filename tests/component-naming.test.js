@@ -97,6 +97,27 @@ tester.run("component-naming", rule, {
     `
         const AnimatedImage = animated(Image);
         `,
+    // switch/case без JSX
+    `
+        function getCurrentMonth() {
+            return 'January';
+        }
+
+        function getCurrentYear() {
+            return '2024';
+        }
+            
+        export function getLabel(type, current, selected) {
+            switch (type) {
+                case 'months':
+                    return getCurrentMonth(current, selected);
+                case 'years':
+                    return getCurrentYear(current, selected);
+                default:
+                    return null;
+            }
+        }
+      `,
   ],
 
   invalid: [

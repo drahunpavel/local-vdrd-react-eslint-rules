@@ -20,6 +20,11 @@ export const isComponentAlias = (node) => {
     return isPascalCaseIdentifier(node.arguments[0]);
   }
 
+  // const RenderComponent = buttonTypes[type] ?? ButtonPrimary
+  if (node?.type === "LogicalExpression" && node.operator === "??") {
+    return isPascalCaseIdentifier(node.right);
+  }
+
   return false;
 };
 

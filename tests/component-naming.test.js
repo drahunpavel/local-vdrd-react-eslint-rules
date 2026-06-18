@@ -83,6 +83,10 @@ tester.run("component-naming", rule, {
     `
         const Stack = createNativeStackNavigator();
         `,
+    // компонент-алиас через свойство объекта
+    `
+        const RenderItemLeft = left.RenderItem;
+        `,
   ],
 
   invalid: [
@@ -174,6 +178,13 @@ tester.run("component-naming", rule, {
         const stack = createNativeStackNavigator();
       `,
       errors: [{ messageId: "notPascal", data: { name: "stack" } }],
+    },
+    // компонент-алиас через свойство объекта, некорректное наименование компонента
+    {
+      code: `
+        const renderItemLeft = left.RenderItem;
+      `,
+      errors: [{ messageId: "notPascal", data: { name: "renderItemLeft" } }],
     },
   ],
 });

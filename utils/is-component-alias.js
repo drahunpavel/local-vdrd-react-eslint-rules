@@ -25,6 +25,11 @@ export const isComponentAlias = (node) => {
     return isPascalCaseIdentifier(node.right);
   }
 
+  // const RenderItemLeft = left.RenderItem
+  if (node?.type === "MemberExpression") {
+    return isPascalCaseIdentifier(node.property);
+  }
+
   return false;
 };
 
